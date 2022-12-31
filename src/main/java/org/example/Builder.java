@@ -6,33 +6,46 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class Builder {
-    Queue queue;
     final String KEYWORD = "require ‘";
-
-    public void SearchFiles(String file) {
+    String rootPath;
+    public Builder(){
+        // queue = new Queue();
+        rootPath = "";
+    }
+    public Queue Build(String path){
+        Queue queue = new Queue();
+        rootPath = path;
+        SearchFiles(rootPath, queue);
+        return queue;
+    }
+    public void SearchFiles(String file, Queue queue) {
         File dir = new File(file);
         var files = dir.listFiles();
         for (int i = 0; i < files.length; i++) {
             if(files[i].isFile()){
-                Read(files[i].getPath());
+                Read(files[i].getPath(),queue);
             } else {
-                SearchFiles(files[i].getPath());
+                SearchFiles(files[i].getPath(),queue);
             }
         }
     }
 
-    public void Read(String path) {
-        TextFile file = new TextFile(path);
+    public void Read(String path,Queue queue) {
+        TextFile file = new TextFile( path);
         String text = FileManager.ReadAllText(path);
         String otherFile = "";
         int index = text.indexOf(KEYWORD);
         while (index != -1) {
-            char c = text.charAt(index + 1);
+            index+=KEYWORD.length();
+            char c = text.charAt(index);
             while (c != '’') {
                 otherFile += c;
+                index++;
+                c = text.charAt(index);
             }
-            file.AddRequire(otherFile);
+            file.AddRequire(rootPath +"\\"+ otherFile + ".txt");
             index = text.indexOf(KEYWORD, index);
+            otherFile = "";
         }
         queue.Add(file);
     }

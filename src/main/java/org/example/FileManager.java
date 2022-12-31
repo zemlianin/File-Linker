@@ -4,18 +4,15 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class FileManager {
-    public static String ReadAllText(String path){
+    public static String ReadAllText(String path) {
         String output = "";
-        try(FileReader reader = new FileReader(path))
-        {
-            // читаем посимвольно
+        try (FileReader reader = new FileReader(path)) {
             int symbolCode;
-            while((symbolCode=reader.read())!=-1){
-                char symbol = (char)symbolCode;
-                output+=symbol;
+            while ((symbolCode = reader.read()) != -1) {
+                char symbol = (char) symbolCode;
+                output += symbol;
             }
-        }
-        catch(IOException ex){
+        } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
         return output;

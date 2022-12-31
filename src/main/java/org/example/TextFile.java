@@ -6,15 +6,19 @@ import java.util.ArrayList;
 
 public class TextFile {
     ArrayList<String> require;
-    Boolean Sorted;
+    Integer Color;
     String path;
-
-    public void setSorted(Boolean sorted) {
-        Sorted = sorted;
+    public TextFile(){
+        require = new ArrayList<>();
+        Color = 0;
+        path = "";
+    }
+    public void setSorted(Integer color) {
+        Color = color;
     }
 
-    public Boolean getSorted() {
-        return Sorted;
+    public Integer getSorted() {
+        return Color;
     }
 
     public String getPath() {
@@ -22,6 +26,8 @@ public class TextFile {
     }
 
     public TextFile(String path){
+        require = new ArrayList<>();
+        Color = 0;
         this.path = path;
     }
     void  AddRequire(String path){
