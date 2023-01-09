@@ -1,23 +1,34 @@
 package org.example;
 
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.InputMismatchException;
 
+/**
+ * Очередь файлов.
+ */
 public class Queue {
-    ArrayList<TextFile> queue;
-    ArrayList<TextFile> sortedQueue;
-    HashMap<String, TextFile> addresses;
+    private ArrayList<TextFile> queue;
+    private ArrayList<TextFile> sortedQueue;
+    private HashMap<String, TextFile> addresses;
 
+    /**
+     * Конструктор очереди по умолчанию.
+     */
     public Queue() {
         queue = new ArrayList<>();
         sortedQueue = new ArrayList<>();
         addresses = new HashMap<>();
     }
 
-    public ArrayList<TextFile> Sort() throws Exception {
+    /**
+     * Сортировка очереди
+     *
+     * @return Массив файл в нужном порядке.
+     * @throws InputMismatchException Ошибочный порядок файлов
+     */
+    public ArrayList<TextFile> sort() throws InputMismatchException {
         if (!queue.isEmpty()) {
             for (var it : queue) {
                 DFS(it);
@@ -28,11 +39,17 @@ public class Queue {
         }
     }
 
-    public void DFS(TextFile file) throws Exception {
-        if (file.getSorted() == 1) {
-            throw new Exception();
+    /**
+     * Обход графа.
+     *
+     * @param file Файл над которым проходит обход.
+     * @throws InputMismatchException Обнаружение цикла.
+     */
+    private void DFS(TextFile file) throws InputMismatchException {
+        if (file.getColor() == 1) {
+            throw new InputMismatchException();
         }
-        if (file.getSorted() == 0) {
+        if (file.getColor() == 0) {
             file.setSorted(1);
             for (var it : file.require) {
                 if (addresses.containsKey(it)) {
@@ -44,7 +61,12 @@ public class Queue {
         }
     }
 
-    public void Add(TextFile file) {
+    /**
+     * Добавление файла в очередь.
+     *
+     * @param file Файл.
+     */
+    public void add(TextFile file) {
         queue.add(file);
         addresses.put(file.getPath(), file);
     }

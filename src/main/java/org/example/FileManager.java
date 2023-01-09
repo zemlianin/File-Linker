@@ -3,8 +3,16 @@ package org.example;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Менеджер работы с файловоми потоками.
+ */
 public class FileManager {
-    public static String ReadAllText(String path) {
+    /**
+     * Чтение файла целиком.
+     * @param path Ссылка на файл.
+     * @return Содержимое.
+     */
+    public static String readAllText(String path) {
         String output = "";
         try (FileReader reader = new FileReader(path)) {
             int symbolCode;

@@ -1,52 +1,73 @@
 package org.example;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
 
+/**
+ * Билдер очеереди.
+ */
 public class Builder {
-    final String KEYWORD = "require ‘";
-    String rootPath;
-    public Builder(){
+    private final String KEYWORD = "require ‘";
+    private String rootPath;
+
+    public Builder() {
         // queue = new Queue();
         rootPath = "";
     }
-    public Queue Build(String path){
+
+    /**
+     * Билд очереди.
+     *
+     * @param path ссылка на дирректорию.
+     * @return Очередь.
+     */
+    public Queue build(String path) {
         Queue queue = new Queue();
         rootPath = path;
-        SearchFiles(rootPath, queue);
+        searchFiles(rootPath, queue);
         return queue;
     }
-    public void SearchFiles(String file, Queue queue) {
+
+    /**
+     * Поиск файлов.
+     *
+     * @param file  Файл.
+     * @param queue Очередь.
+     */
+    private void searchFiles(String file, Queue queue) {
         File dir = new File(file);
         var files = dir.listFiles();
         for (int i = 0; i < files.length; i++) {
-            if(files[i].isFile()){
-                Read(files[i].getPath(),queue);
+            if (files[i].isFile()) {
+                read(files[i].getPath(), queue);
             } else {
-                SearchFiles(files[i].getPath(),queue);
+                searchFiles(files[i].getPath(), queue);
             }
         }
     }
 
-    public void Read(String path,Queue queue) {
-        TextFile file = new TextFile( path);
-        String text = FileManager.ReadAllText(path);
+    /**
+     * Чтение файла и получение зависмостей исходя из содержимого.
+     *
+     * @param path  Путь к файлу.
+     * @param queue Очередь.
+     */
+    private void read(String path, Queue queue) {
+        TextFile file = new TextFile(path);
+        String text = FileManager.readAllText(path);
         String otherFile = "";
         int index = text.indexOf(KEYWORD);
         while (index != -1) {
-            index+=KEYWORD.length();
+            index += KEYWORD.length();
             char c = text.charAt(index);
             while (c != '’') {
                 otherFile += c;
                 index++;
                 c = text.charAt(index);
             }
-            file.AddRequire(rootPath +"\\"+ otherFile + ".txt");
+            file.addRequire(rootPath + "\\" + otherFile + ".txt");
             index = text.indexOf(KEYWORD, index);
             otherFile = "";
         }
-        queue.Add(file);
+        queue.add(file);
     }
 }

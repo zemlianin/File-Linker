@@ -1,36 +1,74 @@
 package org.example;
 
-import java.lang.reflect.Array;
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class TextFile {
     ArrayList<String> require;
-    Integer Color;
-    String path;
-    public TextFile(){
+    private Integer Color;
+    private String path;
+
+    /**
+     * Конструктор по умолчанию.
+     */
+    public TextFile() {
         require = new ArrayList<>();
         Color = 0;
         path = "";
     }
+
+    /**
+     * Присвоение цвета.
+     *
+     * @param color цвет.
+     */
     public void setSorted(Integer color) {
         Color = color;
     }
 
-    public Integer getSorted() {
+    /**
+     * Получение цвета.
+     *
+     * @return цвет.
+     */
+    public Integer getColor() {
         return Color;
     }
 
+    /**
+     * Получение ссылки.
+     *
+     * @return ссылка.
+     */
     public String getPath() {
         return path;
     }
 
-    public TextFile(String path){
+    /**
+     * Конструкктор текстого файла.
+     *
+     * @param path ссылка на файл.
+     */
+    public TextFile(String path) {
         require = new ArrayList<>();
         Color = 0;
         this.path = path;
     }
-    void  AddRequire(String path){
+
+    /**
+     * Вывод файла.
+     *
+     * @return Text of file.
+     */
+    public String outputText() {
+        String text = "";
+        text = FileManager.readAllText(path);
+        return text;
+    }
+
+    /**
+     * @param path Ссылка на запрашиваемый файл
+     */
+    void addRequire(String path) {
         require.add(path);
     }
 }
